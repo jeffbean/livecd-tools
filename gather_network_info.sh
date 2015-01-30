@@ -7,7 +7,7 @@ fi
 
 VIRT_PLATFORM=$(virt-what)
 
-if [ -n ${VIRT_PLATFORM} ]; then
+if [ -z "$VIRT_PLATFORM" ]; then
     echo "Not a VM, we can move forward"
     IDENTIFIER=$(dmidecode -s system-serial-number)
     echo "Found serial nubmer: [${IDENTIFIER}]"
@@ -17,9 +17,8 @@ else
     echo "Identifer will be the viratual platform name: [${IDENTIFIER}]"
 fi
 
-DMIDECODE_OUTPUT_FILE=/root/dmidecode-${IDENTIFIER}.xml
+LSHW_OUTPUT_FILE=/root/dmidecode-${IDENTIFIER}.xml
 
-echo "Gathering Network information.."
-lshw -xml > ${DMIDECODE_OUTPUT_FILE}
-echo "Finished Gathering Network information to [${DMIDECODE_OUTPUT_FILE}]"
-
+echo "Gathering System Hardware information.."
+lshw -json > ${LSHW_OUTPUT_FILE}
+echo "Finished Gathering System Hardware information to [${LSHW_OUTPUT_FILE}]"
